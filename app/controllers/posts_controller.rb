@@ -1,9 +1,17 @@
 class PostsController < ApplicationController
 
+# conditional to check whether...
+# user wants all posts or all posts by a specific author
   def index
-    @posts = Post.all
+    if params[:author_id]
+      @posts = Author.find(params[:author_id]).posts
+    else
+      @posts = Post.all
+    end
   end
 
+# going to render same view regardless of parameters
+# whether URL is /posts/:id or /authors/:id/posts/:id
   def show
     @post = Post.find(params[:id])
   end
@@ -31,6 +39,6 @@ class PostsController < ApplicationController
 private
 
   def post_params
-    params.require(:post).permit(:title, :desription, :post_status, :author_id)
+    params.require(:post).permit(:title, :description, :post_status, :author_id)
   end
 end
